@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Sandbox</title>
+  </head>
+  <body>
+
+    <my-card>
+		<!-- Content placed inside the slots -->
+		<h2 slot="title" part="title">Card Title</h2>
+		<p slot="content">This is the content of the card.</p>
+	</my-card>
+    
+    <script>
+        class MyCard extends HTMLElement {
+      		constructor() {
+				super();
+
+				// Create a Shadow DOM for this custom element.
+				const shadow = this.attachShadow({ mode: 'open' });
+
+				// Create a container for the card content.
+				const cardContainer = document.createElement('div');
+
+				// Add Part attribute so that css can find it.
+				cardContainer.setAttribute("part", "content-container")
+
+				// Create slots for title and content.
+				cardContainer.innerHTML = `
+				<slot name="title"></slot>
+				<hr>
+				<slot name="content"></slot>
+				`;
+
+				// Append the card container to the Shadow DOM
+				shadow.appendChild(cardContainer);
+			}
+		}
+
+    	customElements.define('my-card', MyCard);
+
+		class CheckList extends HTMLElement {
+			constructor() {
+				super()
+
+				const shadow = this.attachShadow({mode: 'open'})
+				
+
+			}
+		}
+    </script>
+
+    <style>
+		h2 {
+			color: red;
+		}
+
+		my-card::part(content-container) {
+			border: 2px solid green;
+			padding: 15px;
+			text-align: center;
+		}
+    </style>
+
+  </body>
+</html>
